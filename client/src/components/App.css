@@ -1,0 +1,4 @@
+.App-container {
+    padding: var(--m) var(--m);
+    margin: none;
+  }
