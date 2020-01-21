@@ -11,6 +11,9 @@ const express = require("express");
 
 // import models so we can interact with the database
 const User = require("./models/user");
+const Parcel = require("./models/parcel");
+const Item = require("./models/item");
+const Resident = require("./models/resident");
 
 // import authentication library
 const auth = require("./auth");
@@ -41,6 +44,59 @@ router.post("/initsocket", (req, res) => {
 // |------------------------------|
 // | write your API methods below!|
 // |------------------------------|
+
+router.get("/user", (req, res) => {
+  User.findById(req.query.userid).then((user) => {
+    res.send(user);
+  });
+});
+
+router.get("/parcels", (req, res) => {
+  // empty selector means get all documents
+  Parcel.find({}).then((parcels) => res.send(parcels));
+});
+
+router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
+  const newParcel = new Parcel({
+    tracking: req.body.tracking,
+    carrier: req.body.carrier,
+    resident: req.body.resident,
+    worker_name: req.user.name,
+    worker_id: req.user._id,
+  });
+
+  newParcel.save().then((parcel) => res.send(parcel));
+});
+
+router.get("/items", (req, res) => {
+  // empty selector means get all documents
+  Item.find({}).then((items) => res.send(items));
+});
+
+router.post("/item", auth.ensureLoggedIn, (req, res) => {
+  const newItem = new Item({
+    title: req.body.title,
+    type: req.body.type,
+    resident: req.body.resident,
+    worker_name: req.user.name,
+    worker_id: req.user._id,
+  });
+
+  newItem.save().then((item) => res.send(item));
+});
+
+router.get("/residents", (req, res) => {
+  // empty selector means get all documents
+  Resident.find({}).then((residents) => res.send(residents));
+});
+
+router.post("/resident", auth.ensureLoggedIn, (req, res) => {
+  const newResident = new Resident({
+    name: req.body.name,
+  });
+
+  newResident.save().then((resident) => res.send(resident));
+});
 
 // anything else falls to this "not found" case
 router.all("*", (req, res) => {

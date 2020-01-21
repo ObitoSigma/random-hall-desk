@@ -61,3 +61,14 @@ export function post(endpoint, params = {}) {
       throw `POST request to ${endpoint} failed with error:\n${error}`;
     });
 }
+
+// Return a Promise to a JSON Object. 
+export function del(endpoint, params = {}) {
+  return fetch(endpoint, {
+    method: 'delete'
+  })
+    .then(response => response.json())
+    .catch((error) => {
+      throw `DEL request to ${endpoint} failed with error:\n${error}`;
+    });
+}

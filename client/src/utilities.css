@@ -15,11 +15,11 @@
 */
 
 /* TODO: REPLACE WITH YOUR OWN FONT! */
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
 
 :root {
-  --primary: #396dff;
-  --primary--dim: #6987db;
+  --primary: #ee4444;
+  --primary--dim: #e27474;
   --darkgrey: #d4d4d4;
   --medgrey: #e0e0e0;
   --grey: #f7f7f7;
@@ -57,6 +57,10 @@ form {
 
 .u-flex-alignCenter {
   align-items: center;
+}
+
+.u-flex-alignStretch {
+  align-items: stretch;
 }
 
 .u-inlineBlock {
