@@ -23,6 +23,8 @@ class CheckInParcel extends Component {
         this.setState({ parcels: this.state.parcels.concat([parcelObj]) });
       });
     });
+    get("/api/user", { userId: this.props.userId })
+    .then((user) => this.setState({ user: user }));
   }
 
   // this gets called when the user pushes "Submit", so their
@@ -31,10 +33,6 @@ class CheckInParcel extends Component {
     this.setState({
       parcels: [parcelObj].concat(this.state.parcels),
     });
-    // i have spent almost 6 hours getting the below code to work...
-    const userid = this.props.userId;
-    get("/api/user", userid)
-    .then((user) => this.setState({ user: user }));
   };
 
   render() {
