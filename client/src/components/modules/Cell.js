@@ -24,6 +24,7 @@ class Cell extends Component {
           tracking={this.props.tracking}
           worker_name={this.props.worker_name}
           worker_id={this.props.worker_id}
+          delParcel={this.props.delParcel}
         />
       </div>
     );

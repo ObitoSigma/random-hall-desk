@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 
 import "./NewPostInput.css";
-import { post, del } from "../../utilities";
+import { post } from "../../utilities";
+import { get } from "mongoose";
 
 /**
  * New Post is a parent component for all input components
@@ -67,6 +68,8 @@ class NewParcel extends Component {
       // display this parcel on the screen
       this.props.addNewParcel(parcel);
     });
+
+    post("/api/pushParcel", { _id: this.props.userId, tracking: value});
   };
 
   render() {

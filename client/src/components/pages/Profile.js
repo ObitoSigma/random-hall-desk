@@ -13,7 +13,7 @@ class Profile extends Component {
 
     componentDidMount() {
         document.title = "Worker Profile";
-        get(`/api/user`, { userid: this.props.userId })
+        get("/api/user", { userId: this.props.userId })
             .then((user) => this.setState({ user: user }));
     }
 

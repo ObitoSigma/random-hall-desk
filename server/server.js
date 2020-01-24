@@ -33,9 +33,7 @@ const auth = require("./auth");
 const socket = require("./server-socket");
 
 // Server configuration below
-// TODO change connection URL after setting up your team database
 const mongoConnectionURL = process.env.ATLAS_SRV;
-// TODO change database name to the name you chose
 const databaseName = "random-desk";
 
 // connect to mongodb

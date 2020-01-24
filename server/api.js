@@ -47,10 +47,19 @@ router.post("/initsocket", (req, res) => {
 
 router.get("/user", (req, res) => {
   User.findById(req.query.userId).then((user) => {
-    console.log(user);
     res.send(user);
   });
 });
+
+router.put("/user", auth.ensureLoggedIn, (req, res) => {
+  console.log('hello');
+  User.findById(req.query.userId).then((user) => {
+    console.log(req.query.userId);
+    console.log(req.body.tracking);
+    console.log(user.parcelHistory);
+    user.parcelHistory.push(req.body.tracking);
+  })
+})
 
 router.get("/parcels", (req, res) => {
   // empty selector means get all documents
@@ -68,6 +77,18 @@ router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
 
   newParcel.save().then((parcel) => res.send(parcel));
 });
+
+router.post("/delete", auth.ensureLoggedIn, (req, res) => {
+  Parcel.deleteOne( { _id: req.body._id} )
+})
+
+router.post("/update", auth.ensureLoggedIn, (req, res) => {
+  User.updateOne( { _id: req.body._id}, { property: req.body.property});
+})
+
+router.post("/pushParcel", auth.ensureLoggedIn, (req, res) => {
+  User.updateOne( req.body._id, { $push: {parcelHistory: req.body.tracking} } );
+})
 
 router.get("/items", (req, res) => {
   // empty selector means get all documents

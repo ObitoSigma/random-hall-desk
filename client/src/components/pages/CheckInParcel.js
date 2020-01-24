@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Cell from "../modules/Cell.js";
 import { NewParcel } from "../modules/NewPostInput.js";
 
-import { get } from "../../utilities";
+import { get, post } from "../../utilities";
 
 import "./CheckInParcel.css";
 
@@ -27,13 +27,18 @@ class CheckInParcel extends Component {
     .then((user) => this.setState({ user: user }));
   }
 
-  // this gets called when the user pushes "Submit", so their
-  // post gets added to the screen right away
   addNewParcel = (parcelObj) => {
     this.setState({
       parcels: [parcelObj].concat(this.state.parcels),
     });
   };
+
+  delParcel = (key) => {
+    this.setState({
+      parcels: this.state.parcels.filter((parcel) => parcel._id !== key)
+    });
+    post("/api/delete", { _id: key });
+  }
 
   render() {
     let parcelsList = null;
@@ -47,8 +52,9 @@ class CheckInParcel extends Component {
           worker_name={parcelObj.worker_name}
           worker_id={parcelObj.worker_id}
           userId={this.props.userId}
+          delParcel={() => this.delParcel(parcelObj._id)}
         />
-        // deliver button here
+        // mass deliver button here
       ));
     } else {
       parcelsList = <div>No parcels!</div>;
