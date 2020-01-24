@@ -61,7 +61,7 @@ class CheckInParcel extends Component {
     }
     return (
       <>
-        {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} />}
+        {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} userId={this.props.userId} />}
         {parcelsList}
       </>
     );

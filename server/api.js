@@ -80,14 +80,17 @@ router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
 
 router.post("/delete", auth.ensureLoggedIn, (req, res) => {
   Parcel.deleteOne( { _id: req.body._id} )
+  .catch((error) => console.log(error));
 })
 
 router.post("/update", auth.ensureLoggedIn, (req, res) => {
-  User.updateOne( { _id: req.body._id}, { property: req.body.property});
+  User.updateOne( { _id: req.body._id}, { property: req.body.property})
+  .catch((error) => console.log(error));
 })
 
 router.post("/pushParcel", auth.ensureLoggedIn, (req, res) => {
-  User.updateOne( req.body._id, { $push: {parcelHistory: req.body.tracking} } );
+  User.updateOne( { _id: req.body._id}, { $push: {parcelHistory: req.body.tracking} } )
+  .catch((error) => console.log(error));;
 })
 
 router.get("/items", (req, res) => {

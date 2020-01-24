@@ -68,7 +68,6 @@ class NewParcel extends Component {
       // display this parcel on the screen
       this.props.addNewParcel(parcel);
     });
-
     post("/api/pushParcel", { _id: this.props.userId, tracking: value});
   };
 
