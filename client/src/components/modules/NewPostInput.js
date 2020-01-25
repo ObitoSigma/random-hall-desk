@@ -12,36 +12,57 @@ class NewPostInput extends Component {
     super(props);
 
     this.state = {
-      value: "",
+      value1: "",
+      value2: "",
     };
   }
 
   // called whenever the user types in the new post input box
-  handleChange = (event) => {
+  handleChange1 = (event) => {
     this.setState({
-      value: event.target.value,
+      value1: event.target.value,
+    });
+  };
+
+  handleChange2 = (event) => {
+    this.setState({
+      value2: event.target.value,
     });
   };
 
   // called when the user hits "Submit" for a new post
   handleSubmit = (event) => {
     event.preventDefault();
-    this.props.onSubmit && this.props.onSubmit(this.state.value);
-    this.setState({
-      value: "",
-    });
+    if (this.state.value1 !== "" && this.state.value2 !== "") {
+      this.props.onSubmit && this.props.onSubmit(this.state.value1, this.state.value2);
+      this.setState({
+        value1: "",
+        value2: "",
+      });
+    }
   };
 
   render() {
+    let residentButtons = this.props.residentList.map((resident) => (
+      <option value={resident}>{resident}</option>
+    ));
     return (
       <div className="u-flex">
         <input
           type="text"
           placeholder={this.props.defaultText}
-          value={this.state.value}
-          onChange={this.handleChange}
+          value={this.state.value1}
+          onChange={this.handleChange1}
           className="NewPostInput-input"
         />
+        <select
+          value={this.state.value2}
+          onChange={this.handleChange2}
+          className="NewPostInput-input"
+        >
+          <option value="">Resident</option>
+          {residentButtons}
+        </select>
         <button
           type="submit"
           className="NewPostInput-button u-pointer"
@@ -62,17 +83,17 @@ class NewPostInput extends Component {
  * @param {string} defaultText is the placeholder text
  */
 class NewParcel extends Component {
-  addParcel = (value) => {
-    const body = { tracking: value };
+  addParcel = (value1, value2) => {
+    const body = { tracking: value1, resident: value2 };
     post("/api/parcel", body).then((parcel) => {
       // display this parcel on the screen
       this.props.addNewParcel(parcel);
     });
-    post("/api/pushParcel", { _id: this.props.userId, tracking: value});
+    post("/api/pushParcel", { _id: this.props.userId, tracking: value1, resident: value2});
   };
 
   render() {
-    return <NewPostInput defaultText="New Parcel" onSubmit={this.addParcel} />;
+    return <NewPostInput defaultText="New Parcel" residentList={this.props.residentList} onSubmit={this.addParcel} />;
   }
 };
 

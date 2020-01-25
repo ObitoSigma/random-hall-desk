@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import GoogleLogin, { GoogleLogout } from "react-google-login";
+import { Link } from "@reach/router";
 
 import "../../utilities.css";
 import "./Home.css";
@@ -29,9 +29,9 @@ class Home extends Component {
             <div className="Home-sidebar-text">
               Schedule
             </div>
-            <div className="Home-sidebar-text">
+            <Link to="/residentlist/" className="Home-sidebar-text">
               Residents
-            </div>
+            </Link>
             <div className="Home-sidebar-text">
               Guest List
             </div>

@@ -9,6 +9,7 @@ import { Link } from "@reach/router";
  * @param {string} worker_name
  * @param {string} worker_id
  * @param {string} tracking of the parcel
+ * @param {string} resident of the parcel
  */
 class SingleParcel extends Component {
   constructor(props) {
@@ -18,8 +19,8 @@ class SingleParcel extends Component {
   render() {
     return (
       <div>
-        <button onClick={this.props.delParcel}>Check Out</button> 
-        {this.props.tracking} checked in by {this.props.worker_name}
+        <button onClick={this.props.delParcel}>Check Out</button>
+        {this.props.tracking} for {this.props.resident} checked in by {this.props.worker_name}
       </div>
     );
   }

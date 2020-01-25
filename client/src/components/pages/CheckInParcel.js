@@ -12,6 +12,7 @@ class CheckInParcel extends Component {
     this.state = {
       user: undefined,
       parcels: [],
+      residentList: [],
     };
   }
 
@@ -25,6 +26,11 @@ class CheckInParcel extends Component {
     });
     get("/api/user", { userId: this.props.userId })
     .then((user) => this.setState({ user: user }));
+    get("/api/residents").then((residentObjs) => {
+      residentObjs.map((residentObj) => {
+        this.setState({ residentList: this.state.residentList.concat([residentObj.name])});
+      });
+    });
   }
 
   addNewParcel = (parcelObj) => {
@@ -49,6 +55,7 @@ class CheckInParcel extends Component {
           key={`Cell_${parcelObj._id}`}
           _id={parcelObj._id}
           tracking={parcelObj.tracking}
+          resident={parcelObj.resident}
           worker_name={parcelObj.worker_name}
           worker_id={parcelObj.worker_id}
           userId={this.props.userId}
@@ -61,7 +68,7 @@ class CheckInParcel extends Component {
     }
     return (
       <>
-        {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} userId={this.props.userId} />}
+        {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} userId={this.props.userId} residentList={this.state.residentList} />}
         {parcelsList}
       </>
     );

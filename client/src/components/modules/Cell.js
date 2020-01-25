@@ -8,6 +8,7 @@ import { get } from "../../utilities";
  * Proptypes
  * @param {string} _id of the parcel
  * @param {string} tracking of the parcel
+ * @param {string} resident of the parcel
  * @param {string} worker_name
  * @param {string} worker_id
  */
@@ -22,6 +23,7 @@ class Cell extends Component {
         <SingleParcel
           _id={this.props._id}
           tracking={this.props.tracking}
+          resident={this.props.resident}
           worker_name={this.props.worker_name}
           worker_id={this.props.worker_id}
           delParcel={this.props.delParcel}

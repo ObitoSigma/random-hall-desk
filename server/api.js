@@ -90,7 +90,9 @@ router.post("/update", auth.ensureLoggedIn, (req, res) => {
 
 router.post("/pushParcel", auth.ensureLoggedIn, (req, res) => {
   User.updateOne( { _id: req.body._id}, { $push: {parcelHistory: req.body.tracking} } )
-  .catch((error) => console.log(error));;
+  .catch((error) => console.log(error));
+  Resident.updateOne( { name: req.body.resident}, { $push: {parcelHistory: req.body.tracking} } )
+  .catch((error) => console.log(error))
 })
 
 router.get("/items", (req, res) => {
