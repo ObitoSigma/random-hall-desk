@@ -26,7 +26,8 @@ class Cell extends Component {
           resident={this.props.resident}
           worker_name={this.props.worker_name}
           worker_id={this.props.worker_id}
-          delParcel={this.props.delParcel}
+          delivered={this.props.delivered}
+          deliver={this.props.deliver}
         />
       </div>
     );

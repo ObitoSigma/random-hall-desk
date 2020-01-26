@@ -8,6 +8,7 @@ class Profile extends Component {
         super(props);
         this.state = {
             user: undefined,
+            parcels: [],
         };
     }
 
@@ -15,17 +16,34 @@ class Profile extends Component {
         document.title = "Worker Profile";
         get("/api/user", { userId: this.props.userId })
             .then((user) => this.setState({ user: user }));
+        get("/api/parcels").then((parcelObjs) => {
+            let myParcels = parcelObjs.filter(parcelObj => parcelObj.worker_id == this.state.user._id);
+            myParcels.map((myParcel) => {
+                this.setState({ parcels: this.state.parcels.concat(myParcel) });
+            })
+        });
     }
 
     render() {
         if (!this.state.user) {
             return <div> Loading! </div>;
         }
+        let parcelHistory = null;
+        const hasParcels = this.state.parcels.length !== 0;
+        if (hasParcels) {
+          parcelHistory = this.state.parcels.map((parcelObj) => (
+            <div>
+                {parcelObj.tracking} for resident {parcelObj.resident}.
+            </div>
+          ));
+        } else {
+          parcelHistory = <div>This user has not checked in any parcels.</div>;
+        }
         return (
             <>
                 <h1>Worker Profile: {this.state.user.name}</h1>
                 <h2>Parcel history:</h2>
-                <div>{JSON.stringify(this.state.user.parcelHistory)}</div>
+                <div>{parcelHistory}</div>
             </>
         );
     }

@@ -17,9 +17,13 @@ class SingleParcel extends Component {
   }
 
   render() {
+    let deliverButton = null;
+    if( !this.props.delivered ) {
+      deliverButton = (<button onClick={this.props.deliver}>Check Out</button>)
+    }
     return (
       <div>
-        <button onClick={this.props.delParcel}>Check Out</button>
+        {deliverButton}
         {this.props.tracking} for {this.props.resident} checked in by {this.props.worker_name}
       </div>
     );

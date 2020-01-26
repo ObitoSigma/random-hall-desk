@@ -84,12 +84,11 @@ class NewPostInput extends Component {
  */
 class NewParcel extends Component {
   addParcel = (value1, value2) => {
-    const body = { tracking: value1, resident: value2 };
+    const body = { tracking: value1, resident: value2, delivered: false };
     post("/api/parcel", body).then((parcel) => {
       // display this parcel on the screen
       this.props.addNewParcel(parcel);
     });
-    post("/api/pushParcel", { _id: this.props.userId, tracking: value1, resident: value2});
   };
 
   render() {

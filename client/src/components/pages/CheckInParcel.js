@@ -18,7 +18,8 @@ class CheckInParcel extends Component {
 
   componentDidMount() {
     document.title = "New Parcel";
-    get("/api/parcels").then((parcelObjs) => {
+    get("/api/parcels").then((allParcelObjs) => {
+      let parcelObjs = allParcelObjs.filter(parcelObj => parcelObj.delivered !== true);
       let reversedParcelObjs = parcelObjs.reverse();
       reversedParcelObjs.map((parcelObj) => {
         this.setState({ parcels: this.state.parcels.concat([parcelObj]) });
@@ -39,11 +40,11 @@ class CheckInParcel extends Component {
     });
   };
 
-  delParcel = (key) => {
+  deliver = (key) => {
     this.setState({
       parcels: this.state.parcels.filter((parcel) => parcel._id !== key)
     });
-    post("/api/delete", { _id: key });
+    post("/api/deliver", { _id: key });
   }
 
   render() {
@@ -58,10 +59,10 @@ class CheckInParcel extends Component {
           resident={parcelObj.resident}
           worker_name={parcelObj.worker_name}
           worker_id={parcelObj.worker_id}
+          delivered={parcelObj.delivered}
           userId={this.props.userId}
-          delParcel={() => this.delParcel(parcelObj._id)}
+          deliver={() => this.deliver(parcelObj._id)}
         />
-        // mass deliver button here
       ));
     } else {
       parcelsList = <div>No parcels!</div>;
@@ -70,6 +71,7 @@ class CheckInParcel extends Component {
       <>
         {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} userId={this.props.userId} residentList={this.state.residentList} />}
         {parcelsList}
+        {/** mass deliver button here */}
       </>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { get } from "../../utilities";
+import SingleResident from "../modules/SingleResident.js";
 
 import "./ResidentList.css";
 
@@ -8,6 +9,7 @@ class ResidentList extends Component {
         super(props);
         this.state = {
             residents: [],
+            parcels: [],
         };
     }
 
@@ -19,17 +21,25 @@ class ResidentList extends Component {
               this.setState({ residents: this.state.residents.concat([residentObj]) });
             });
         });
+        get("/api/parcels")
+        .then((parcelObjs) => {
+            parcelObjs.map((parcelObj) => {
+              this.setState({ parcels: this.state.parcels.concat([parcelObj]) });
+            });
+        });
     }
 
     render() {
         let residentsList = null;
+        let parcelHistory = null;
         const hasResidents = this.state.residents.length !== 0;
-        if (hasResidents) {
+        const hasParcels = this.state.parcels.length !== 0;
+        if (hasResidents && hasParcels) {
             residentsList = this.state.residents.map((residentObj) => (
-                <>
-                    <h2>Resident: {residentObj.name}</h2>
-                    <div>Parcel History: {JSON.stringify(residentObj.parcelHistory)}</div>
-                </>
+                <SingleResident
+                    resident={residentObj}
+                    parcels={this.state.parcels}
+                />
             ));
         } else {
             residentsList = <div>Loading!</div>;

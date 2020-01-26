@@ -5,6 +5,7 @@ const ParcelSchema = new mongoose.Schema({
     resident: String,
     worker_name: String,
     worker_id: String,
+    delivered: Boolean,
 });
 
 module.exports = mongoose.model("parcel", ParcelSchema);
