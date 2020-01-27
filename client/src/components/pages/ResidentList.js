@@ -31,7 +31,6 @@ class ResidentList extends Component {
 
     render() {
         let residentsList = null;
-        let parcelHistory = null;
         const hasResidents = this.state.residents.length !== 0;
         const hasParcels = this.state.parcels.length !== 0;
         if (hasResidents && hasParcels) {

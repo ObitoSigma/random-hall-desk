@@ -1,6 +1,7 @@
 .Home-subContainer {
     flex-grow: 2;
     flex-basis: 0;
+    padding: var(--l) var(--l);
 }
 
 .Home-sidebar {
@@ -32,14 +33,27 @@
 #table {
     border-collapse: collapse;
     width: 90%;
+    position: relative;
 }
-  
-#table td, th {
-    border: 1px solid #dddddd;
+
+#table td {
     text-align: left;
     padding: 8px;
 }
-  
-#table tr:nth-child(even) {
+
+#table thead {
+    text-align: left;
+    padding: 8px;
+    position: absolute;
+    top: -30px;
+}
+
+
+#table tbody tr:nth-child(odd) {
     background-color: #dddddd;
+}
+
+#table-scroll {
+    height: 400px;
+    overflow: auto;  
 }

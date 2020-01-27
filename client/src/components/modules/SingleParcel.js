@@ -19,7 +19,7 @@ class SingleParcel extends Component {
   render() {
     let deliverButton = null;
     if( !this.props.delivered ) {
-      deliverButton = (<button onClick={this.props.deliver}>Check Out</button>)
+      deliverButton = (<button onClick={this.props.deliver}>Deliver</button>)
     }
     return (
       <div>
