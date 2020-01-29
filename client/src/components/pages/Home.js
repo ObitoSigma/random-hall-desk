@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "@reach/router";
 import SingleParcelRow from "../modules/SingleParcelRow.js";
+import SingleItemRow from "../modules/SingleItemRow.js";
 
 import { get, post } from "../../utilities.js";
 import "../../utilities.css";
@@ -12,6 +13,7 @@ class Home extends Component {
     this.state = {
       parcels: [],
       residents: [],
+      items: [],
     };
   }
 
@@ -26,6 +28,12 @@ class Home extends Component {
       });
       this.setState({residents: this.state.residents.filter((r, i) => this.state.residents.indexOf(r)==i)});
     });
+    get("/api/items").then((allItemObjs) => {
+      let outItemObjs = allItemObjs.filter(item => item.available == false);
+      outItemObjs.map((itemObj) => {
+        this.setState({ items: this.state.items.concat([itemObj]) });
+      });
+    });
   }
 
   deliverAll = (resident) => {
@@ -38,20 +46,36 @@ class Home extends Component {
     });
   }
 
+  checkIn = (itemObj) => {
+    post("/api/inItem", { _id: itemObj._id });
+    this.setState({
+      items: this.state.items.filter(item => item._id !== itemObj._id)
+    });
+  }
+
   render() {
     let parcelsList = null;
     const hasParcels = this.state.parcels.length !== 0;
-    const hasResidents = this.state.residents.length !== 0
-    if (hasParcels && hasResidents) {
+    let itemsList = null;
+    const hasItems = this.state.items.length !== 0;
+    const hasResidents = this.state.residents.length !== 0;
+    if (hasParcels && hasItems && hasResidents) {
       parcelsList = this.state.residents.map((resident) => (
         <SingleParcelRow
-          parcels={this.state.parcels}  
+          parcels={this.state.parcels}
           resident={resident}
           deliverAll={() => this.deliverAll(resident)}
         />
       ));
+      itemsList = this.state.items.map((item) => (
+        <SingleItemRow
+          item={item}
+          checkIn={() => this.checkIn(item)}
+        />
+      ));
     } else {
       parcelsList = <tr><th>Loading</th></tr>;
+      itemsList = <tr><th>Loading</th></tr>;
     }
     return (
       <>
@@ -99,33 +123,23 @@ class Home extends Component {
             </div>
           </div>
           <div className="Home-subContainer u-textCenter">
-            <table id="table">
-              <thead>
-                <tr>
-                  <th>Desk Items</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Jane Doe (2)</td>
-                </tr>
-                <tr>
-                  <td>Hantoa Tenwhij (1)</td>
-                </tr>
-                <tr>
-                  <td>Ernst Handel</td>
-                </tr>
-                <tr>
-                  <td>Island Trading</td>
-                </tr>
-                <tr>
-                  <td>Laughing Bacchus Winecellars</td>
-                </tr>
-                <tr>
-                  <td>Magazzini Alimentari Riuniti</td>
-                </tr>
-              </tbody>
-            </table>
+            <div id="table">
+              <div id="table-scroll">
+                <table>
+                  <thead>
+                    <tr className="u-floatRight">
+                      <th>
+                        Items
+                        <span className="u-floatRight">
+                          <Link to="/checkoutitem"><button>Check Out Item</button></Link>
+                        </span>
+                      </th>
+                    </tr>
+                  </thead>
+                  {itemsList}
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </>

@@ -25,7 +25,7 @@ class SingleParcelRow extends Component {
     render() {
         let residentParcels = this.props.parcels.filter(parcel => parcel.resident == this.props.resident);
         let residentParcelList = residentParcels.map((parcel) => (
-            <tr className={this.props.resident}><td>{parcel.tracking}</td></tr>
+            <tr className={this.props.resident}><td>Tracking: {parcel.tracking}</td></tr>
         ));
         let numberParcels = residentParcels.length;
         if (numberParcels !== 0) {
