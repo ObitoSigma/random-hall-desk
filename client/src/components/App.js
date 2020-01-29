@@ -4,6 +4,7 @@ import NavBar from "./modules/NavBar.js";
 import NotFound from "./pages/NotFound.js";
 import Home from "./pages/Home.js";
 import CheckInParcel from "./pages/CheckInParcel.js";
+import CheckOutItem from "./pages/CheckOutItem.js";
 import ResidentList from "./pages/ResidentList.js";
 import Profile from "./pages/Profile.js";
 
@@ -61,6 +62,7 @@ class App extends Component {
           <Router>
             <Home path="/" userId={this.state.userId} />
             <CheckInParcel path="/checkinparcel/" userId={this.state.userId} />
+            <CheckOutItem path="/checkoutitem/" userId={this.state.userId} />
             <ResidentList path="/residentlist/" userId={this.state.userId} />
             <Profile path="/profile/:userId" /> 
             <NotFound default />

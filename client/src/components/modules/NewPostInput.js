@@ -5,9 +5,9 @@ import { post } from "../../utilities";
 import { get } from "mongoose";
 
 /**
- * New Post is a parent component for all input components
+ * New Parcel handles the arrival of a parcel for a resident
  */
-class NewPostInput extends Component {
+class NewParcel extends Component {
   constructor(props) {
     super(props);
 
@@ -17,6 +17,14 @@ class NewPostInput extends Component {
     };
   }
 
+  addParcel = (value1, value2) => {
+    const body = { tracking: value1, resident: value2 };
+    post("/api/parcel", body).then((parcel) => {
+      // display this parcel on the screen
+      this.props.addNewParcel(parcel);
+    });
+  };
+
   // called whenever the user types in the new post input box
   handleChange1 = (event) => {
     this.setState({
@@ -24,6 +32,7 @@ class NewPostInput extends Component {
     });
   };
 
+  //called whenever the user changes the option
   handleChange2 = (event) => {
     this.setState({
       value2: event.target.value,
@@ -34,7 +43,7 @@ class NewPostInput extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.value1 !== "" && this.state.value2 !== "") {
-      this.props.onSubmit && this.props.onSubmit(this.state.value1, this.state.value2);
+      this.addParcel && this.addParcel(this.state.value1, this.state.value2);
       this.setState({
         value1: "",
         value2: "",
@@ -50,7 +59,7 @@ class NewPostInput extends Component {
       <div className="u-flex">
         <input
           type="text"
-          placeholder={this.props.defaultText}
+          placeholder="New Parcel"
           value={this.state.value1}
           onChange={this.handleChange1}
           className="NewPostInput-input"
@@ -77,44 +86,89 @@ class NewPostInput extends Component {
 }
 
 /**
- * New Parcel is a New Post component for parcels
- *
- * Proptypes
- * @param {string} defaultText is the placeholder text
+ * Out Item handles the assignment of an item to a resident
  */
-class NewParcel extends Component {
-  addParcel = (value1, value2) => {
-    const body = { tracking: value1, resident: value2, delivered: false };
-    post("/api/parcel", body).then((parcel) => {
-      // display this parcel on the screen
-      this.props.addNewParcel(parcel);
-    });
-  };
+class OutItem extends Component {
+  constructor(props) {
+    super(props);
 
-  render() {
-    return <NewPostInput defaultText="New Parcel" residentList={this.props.residentList} onSubmit={this.addParcel} />;
+    this.state = {
+      value1: "",
+      value2: "",
+    };
   }
-};
 
-/**
- * New Item is a New Post component for items
- *
- * Proptypes
- * @param {string} defaultText is the placeholder text
- */
-class NewItem extends Component {
-  addItem = (value) => {
-    const body = { title: value };
-    post("/api/item", body).then((item) => {
+  checkOutItem = (value1, value2) => {
+    const body = { _id: value1, resident: value2 };
+    post("/api/outItem", body).then((item) => {
       // display this item on the screen
-      this.props.addNewItem(item);
+      this.props.setCheckedOutItems(item);
     });
   };
 
+  // called whenever the user types in the new post input box
+  handleChange1 = (event) => {
+    this.setState({
+      value1: event.target.value,
+    });
+  };
+
+  //called whenever the user changes the option
+  handleChange2 = (event) => {
+    this.setState({
+      value2: event.target.value,
+    });
+  };
+
+  // called when the user hits "Submit" for a new post
+  handleSubmit = (event) => {
+    event.preventDefault();
+    if (this.state.value1 !== "" && this.state.value2 !== "") {
+      this.checkOutItem && this.checkOutItem(this.state.value1, this.state.value2);
+      this.setState({
+        value1: "",
+        value2: "",
+      });
+    }
+  };
+
   render() {
-    return <NewPostInput defaultText="New Item" onSubmit={this.addItem} />;
+    let itemButtons = this.props.itemList.map((item) => (
+      <option value={item._id}>{item.title}</option>
+    ));
+    let residentButtons = this.props.residentList.map((resident) => (
+      <option value={resident}>{resident}</option>
+    ));
+    return (
+      <div className="u-flex">
+        <select
+          value={this.state.value1}
+          onChange={this.handleChange1}
+          className="NewPostInput-input"
+        >
+          <option value="">Item</option>
+          {itemButtons}
+        </select>
+        <select
+          value={this.state.value2}
+          onChange={this.handleChange2}
+          className="NewPostInput-input"
+        >
+          <option value="">Resident</option>
+          {residentButtons}
+        </select>
+        <button
+          type="submit"
+          className="NewPostInput-button u-pointer"
+          value="Submit"
+          onClick={this.handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
+    );
   }
-};
+}
 
 /**
  * New Resident is a New Post component for residents
@@ -136,4 +190,4 @@ class NewResident extends Component {
   }
 };
 
-export { NewParcel, NewItem, NewResident };
+export { NewParcel, OutItem, NewResident };

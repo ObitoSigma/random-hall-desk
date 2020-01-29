@@ -31,6 +31,9 @@ class NavBar extends Component {
           <Link to="/checkinparcel/" className="NavBar-link">
             Check In Parcels
           </Link>
+          <Link to="/checkoutitem/" className="NavBar-link">
+            Check Out Items
+          </Link>
           {this.props.userId ? (
             <GoogleLogout
               clientId={GOOGLE_CLIENT_ID}

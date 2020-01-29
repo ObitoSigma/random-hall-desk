@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import Cell from "../modules/Cell.js";
 import { NewParcel } from "../modules/NewPostInput.js";
 
 import { get, post } from "../../utilities";
 
 import "./CheckInParcel.css";
+import SingleParcel from "../modules/SingleParcel.js";
 
 class CheckInParcel extends Component {
   constructor(props) {
@@ -52,8 +52,7 @@ class CheckInParcel extends Component {
     const hasParcels = this.state.parcels.length !== 0;
     if (hasParcels) {
       parcelsList = this.state.parcels.map((parcelObj) => (
-        <Cell
-          key={`Cell_${parcelObj._id}`}
+        <SingleParcel
           _id={parcelObj._id}
           tracking={parcelObj.tracking}
           resident={parcelObj.resident}
@@ -71,7 +70,6 @@ class CheckInParcel extends Component {
       <>
         {this.props.userId && <NewParcel addNewParcel={this.addNewParcel} userId={this.props.userId} residentList={this.state.residentList} />}
         {parcelsList}
-        {/** mass deliver button here */}
       </>
     );
   }

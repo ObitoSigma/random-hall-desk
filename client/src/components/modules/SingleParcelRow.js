@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { Link } from "@reach/router";
+import $ from 'jquery';
+
+import "../../utilities.css";
+import "./SingleParcelRow.css";
 
 /**
  * Renders row of a resident's undelivered parcels on Home
  *
  * Proptypes
- * @param {Array} parcels
- * @param {resident} resident
+ * @param {Array} parcels that have not been delivered
+ * @param {String} resident
  * @param {function} deliverAll
  */
 class SingleParcelRow extends Component {
@@ -14,15 +17,29 @@ class SingleParcelRow extends Component {
         super(props);
     }
 
+    hideRows = () => {
+        let residentClass = "."+this.props.resident;
+        $(residentClass).toggle();
+    }
+
     render() {
         let residentParcels = this.props.parcels.filter(parcel => parcel.resident == this.props.resident);
+        let residentParcelList = residentParcels.map((parcel) => (
+            <tr className={this.props.resident}><td>{parcel.tracking}</td></tr>
+        ));
         let numberParcels = residentParcels.length;
         if (numberParcels !== 0) {
         return (
-            <tr>
-                <td>{this.props.resident} ({numberParcels})</td>
-                <td><button onClick={this.props.deliverAll} value={this.props.resident}>Deliver</button></td>
-            </tr>
+            <tbody>
+                <tr>
+                    <td>
+                        <button onClick={this.hideRows}>v</button>
+                        {this.props.resident} ({numberParcels})
+                        <span className="u-floatRight"><button onClick={this.props.deliverAll} value={this.props.resident}>Deliver All</button></span>
+                    </td>
+                </tr>
+                {residentParcelList}
+            </tbody>
         );
         } else { return null }
     }

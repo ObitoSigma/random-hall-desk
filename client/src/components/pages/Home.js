@@ -25,7 +25,6 @@ class Home extends Component {
         });
       });
       this.setState({residents: this.state.residents.filter((r, i) => this.state.residents.indexOf(r)==i)});
-      console.log(this.state.residents)
     });
   }
 
@@ -85,13 +84,16 @@ class Home extends Component {
               <div id="table-scroll">
                 <table>
                   <thead>
-                    <tr>
-                      <th>Parcels</th>
+                    <tr className="u-floatRight">
+                      <th>
+                        Parcels
+                        <span className="u-floatRight">
+                          <Link to="/checkinparcel"><button>New Parcel</button></Link>
+                        </span>
+                      </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {parcelsList}
-                  </tbody>
+                  {parcelsList}
                 </table>
               </div>
             </div>

@@ -32,25 +32,29 @@
 
 #table {
     border-collapse: collapse;
-    width: 90%;
     position: relative;
 }
 
 #table td {
     text-align: left;
     padding: 8px;
+    width: 30%;
 }
 
 #table thead {
-    text-align: left;
     padding: 8px;
     position: absolute;
     top: -30px;
 }
 
 
-#table tbody tr:nth-child(odd) {
+#table tbody tr:first-child {
     background-color: #dddddd;
+}
+
+#table tbody tr:not(:first-child) { 
+    display: none;
+    background-color: #ffaaaa;
 }
 
 #table-scroll {

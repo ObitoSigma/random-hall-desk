@@ -75,6 +75,10 @@ form {
   text-align: center;
 }
 
+.u-floatRight {
+  float: right;
+}
+
 .u-relative {
   position: relative;
 }

@@ -63,6 +63,7 @@ router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
     resident: req.body.resident,
     worker_name: req.user.name,
     worker_id: req.user._id,
+    delivered: false,
   });
 
   newParcel.save().then((parcel) => res.send(parcel));
@@ -93,16 +94,30 @@ router.get("/items", (req, res) => {
   Item.find({}).then((items) => res.send(items));
 });
 
-router.post("/item", auth.ensureLoggedIn, (req, res) => {
-  const newItem = new Item({
-    title: req.body.title,
-    type: req.body.type,
-    resident: req.body.resident,
-    worker_name: req.user.name,
-    worker_id: req.user._id,
-  });
+router.post("/outItem", auth.ensureLoggedIn, (req, res) => {
+  Item.findByIdAndUpdate( 
+    req.body._id,
+    { resident: req.body.resident, 
+      worker_name: req.user.name,
+      worker_id: req.user._id, 
+      available: false,
+    },
+    { new: true }
+  )
+  .then((item) => {res.send(item)})
+  .catch((error) => console.log(error));
+});
 
-  newItem.save().then((item) => res.send(item));
+router.post("/inItem", auth.ensureLoggedIn, (req, res) => {
+  Item.updateOne( 
+    { _id: req.body._id },
+    { resident: undefined,
+      worker_name: undefined,
+      worker_id: undefined,
+      available: true,
+    }
+  )
+  .catch((error) => console.log(error));
 });
 
 router.get("/residents", (req, res) => {
