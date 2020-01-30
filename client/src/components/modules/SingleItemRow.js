@@ -22,6 +22,8 @@ class SingleItemRow extends Component {
     }
 
     render() {
+        let date = new Date(this.props.item.checkoutDate);
+        date = (date.getMonth()+1)+"/"+date.getDate()+"/"+date.getFullYear()+" "+date.getHours()+":"+date.getMinutes();
         return (
             <tbody>
                 <tr>
@@ -33,6 +35,7 @@ class SingleItemRow extends Component {
                 </tr>
                 <tr className={this.props.item._id}><td>Category: {this.props.item.category}</td></tr>
                 <tr className={this.props.item._id}><td>Worker: {this.props.item.worker_name}</td></tr>
+                <tr className={this.props.item._id}><td>Checked Out: {date}</td></tr>
             </tbody>
         );
     }

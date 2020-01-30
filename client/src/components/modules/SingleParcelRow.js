@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import $ from 'jquery';
 
 import "../../utilities.css";
-import "./SingleParcelRow.css";
 
 /**
  * Renders row of a resident's undelivered parcels on Home

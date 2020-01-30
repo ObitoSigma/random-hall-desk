@@ -1,8 +1,7 @@
 import React, { Component } from "react";
-import { Link } from "@reach/router";
 
 /**
- * Parcel is a component that renders tracking of a parcel
+ * Parcel is a component that renders parcel text
  *
  * Proptypes
  * @param {string} _id of the parcel

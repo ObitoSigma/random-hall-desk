@@ -7,6 +7,7 @@ const ItemSchema = new mongoose.Schema({
     worker_name: String,
     worker_id: String,
     available: Boolean,
+    checkoutDate: Date,
 });
 
 module.exports = mongoose.model("item", ItemSchema);

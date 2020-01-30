@@ -63,13 +63,14 @@ router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
     worker_name: req.user.name,
     worker_id: req.user._id,
     delivered: false,
+    arrivalDate: new Date(),
   });
 
   newParcel.save().then((parcel) => res.send(parcel));
 });
 
 router.post("/deliver", auth.ensureLoggedIn, (req, res) => {
-  Parcel.updateOne( { _id: req.body._id }, { delivered: true} )
+  Parcel.updateOne( { _id: req.body._id }, { delivered: true, pickupDate: new Date() } )
   .catch((error) => console.log(error));
 });
 
@@ -84,6 +85,7 @@ router.post("/outItem", auth.ensureLoggedIn, (req, res) => {
       worker_name: req.user.name,
       worker_id: req.user._id, 
       available: false,
+      checkoutDate: new Date(),
     },
     { new: true }
   )
@@ -98,6 +100,7 @@ router.post("/inItem", auth.ensureLoggedIn, (req, res) => {
       worker_name: undefined,
       worker_id: undefined,
       available: true,
+      checkoutDate: undefined,
     }
   )
   .catch((error) => console.log(error));

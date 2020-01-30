@@ -82,8 +82,8 @@ class Home extends Component {
         />
       ));
     } else {
-      parcelsList = <tr><th>Loading</th></tr>;
-      itemsList = <tr><th>Loading</th></tr>;
+      parcelsList = <tr><th>No parcels recorded.</th></tr>;
+      itemsList = <tr><th>No items checked out.</th></tr>;
     }
     return (
       <>

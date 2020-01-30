@@ -6,6 +6,8 @@ const ParcelSchema = new mongoose.Schema({
     worker_name: String,
     worker_id: String,
     delivered: Boolean,
+    arrivalDate: Date,
+    pickupDate: Date,
 });
 
 module.exports = mongoose.model("parcel", ParcelSchema);

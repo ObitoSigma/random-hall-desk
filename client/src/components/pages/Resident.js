@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { get } from "../../utilities";
+import SingleResidentParcel from "../modules/SingleResidentParcel";
 
 class Resident extends Component {
     constructor(props) {
@@ -29,13 +30,11 @@ class Resident extends Component {
         let parcelHistory = null;
         const hasParcels = this.state.parcels.length !== 0;
         if (hasParcels) {
-            parcelHistory = this.state.parcels.map((parcel) => (
-                <div>
-                    {parcel.tracking} checked in by {parcel.worker_name}
-                </div>
+            parcelHistory = this.state.parcels.map((parcelObj) => (
+                <SingleResidentParcel parcelObj={parcelObj} />
             ));
         } else {
-            parcelHistory = <div>Loading!</div>;
+            parcelHistory = <div>This resident has never received a parcel.</div>;
         }
         return (
           <div>
