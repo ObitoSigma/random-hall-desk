@@ -52,7 +52,6 @@ router.get("/user", (req, res) => {
 });
 
 router.get("/parcels", (req, res) => {
-  // empty selector means get all documents
   Parcel.find().then((parcels) => res.send(parcels));
 });
 
@@ -70,27 +69,11 @@ router.post("/parcel", auth.ensureLoggedIn, (req, res) => {
 });
 
 router.post("/deliver", auth.ensureLoggedIn, (req, res) => {
-  // Parcel.deleteOne( { _id: req.body._id } )
   Parcel.updateOne( { _id: req.body._id }, { delivered: true} )
   .catch((error) => console.log(error));
-})
-
-router.post("/update", auth.ensureLoggedIn, (req, res) => {
-  User.updateOne( { _id: req.body._id}, { property: req.body.property})
-  .catch((error) => console.log(error));
-})
-
-/** get rid of later
-router.post("/pushParcel", auth.ensureLoggedIn, (req, res) => {
-  User.updateOne( { _id: req.body._id}, { $push: {parcelHistory: req.body.tracking} } )
-  .catch((error) => console.log(error));
-  Resident.updateOne( { name: req.body.resident}, { $push: {parcelHistory: req.body.tracking} } )
-  .catch((error) => console.log(error))
-})
-*/
+});
 
 router.get("/items", (req, res) => {
-  // empty selector means get all documents
   Item.find({}).then((items) => res.send(items));
 });
 
@@ -120,8 +103,13 @@ router.post("/inItem", auth.ensureLoggedIn, (req, res) => {
   .catch((error) => console.log(error));
 });
 
+router.get("/resident", (req, res) => {
+  Resident.findById(req.query.residentId).then((resident) => {
+    res.send(resident);
+  });
+});
+
 router.get("/residents", (req, res) => {
-  // empty selector means get all documents
   Resident.find({}).then((residents) => res.send(residents));
 });
 

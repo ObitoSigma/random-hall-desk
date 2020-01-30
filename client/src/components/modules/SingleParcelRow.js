@@ -25,7 +25,12 @@ class SingleParcelRow extends Component {
     render() {
         let residentParcels = this.props.parcels.filter(parcel => parcel.resident == this.props.resident);
         let residentParcelList = residentParcels.map((parcel) => (
-            <tr className={this.props.resident}><td>Tracking: {parcel.tracking}</td></tr>
+            <tr className={this.props.resident}><td>
+                Tracking: {parcel.tracking}
+                <span className="u-floatRight">
+                    <button onClick={() => this.props.deliverOne(parcel)} >Deliver</button>
+                </span>
+            </td></tr>
         ));
         let numberParcels = residentParcels.length;
         if (numberParcels !== 0) {

@@ -14,8 +14,10 @@ class Profile extends Component {
 
     componentDidMount() {
         document.title = "Worker Profile";
+        console.log(this.state.user);
         get("/api/user", { userId: this.props.userId })
             .then((user) => this.setState({ user: user }));
+        console.log(this.state.user);
         get("/api/parcels").then((parcelObjs) => {
             let myParcels = parcelObjs.filter(parcelObj => parcelObj.worker_id == this.state.user._id);
             myParcels.map((myParcel) => {

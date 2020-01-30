@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "@reach/router";
 import { get } from "../../utilities";
 import SingleResident from "../modules/SingleResident.js";
 
@@ -9,7 +10,6 @@ class ResidentList extends Component {
         super(props);
         this.state = {
             residents: [],
-            parcels: [],
         };
     }
 
@@ -21,24 +21,18 @@ class ResidentList extends Component {
               this.setState({ residents: this.state.residents.concat([residentObj]) });
             });
         });
-        get("/api/parcels")
-        .then((parcelObjs) => {
-            parcelObjs.map((parcelObj) => {
-              this.setState({ parcels: this.state.parcels.concat([parcelObj]) });
-            });
-        });
     }
 
     render() {
         let residentsList = null;
         const hasResidents = this.state.residents.length !== 0;
-        const hasParcels = this.state.parcels.length !== 0;
-        if (hasResidents && hasParcels) {
+        if (hasResidents) {
             residentsList = this.state.residents.map((residentObj) => (
-                <SingleResident
-                    resident={residentObj}
-                    parcels={this.state.parcels}
-                />
+                <div>
+                    <Link to={`/resident/${residentObj._id}`}>
+                        {residentObj.name}
+                    </Link>
+                </div>
             ));
         } else {
             residentsList = <div>Loading!</div>;

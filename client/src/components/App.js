@@ -6,6 +6,7 @@ import Home from "./pages/Home.js";
 import CheckInParcel from "./pages/CheckInParcel.js";
 import CheckOutItem from "./pages/CheckOutItem.js";
 import ResidentList from "./pages/ResidentList.js";
+import Resident from "./pages/Resident.js";
 import Profile from "./pages/Profile.js";
 
 import "./App.css";
@@ -19,11 +20,11 @@ import { get, post } from "../utilities";
  * Define the "App" component as a class.
  */
 class App extends Component {
-  // makes props available in this component
   constructor(props) {
     super(props);
     this.state = {
       userId: undefined,
+      residentIds: [],
     };
   }
 
@@ -33,6 +34,11 @@ class App extends Component {
         // they are registed in the database, and currently logged in.
         this.setState({ userId: user._id });
       }
+    });
+    get("/api/residents").then((residentObjs) => {
+      residentObjs.map((residentObj) => {
+        this.setState({ residentIds: this.state.residentIds.concat([residentObj._id])});
+      });
     });
   }
 
@@ -51,6 +57,13 @@ class App extends Component {
   };
 
   render() {
+    let residentList = null;
+    const hasResidents = this.state.residentIds.length !== 0;
+    if (hasResidents) {
+      residentList = this.state.residentIds.map((residentId) => (
+        <Resident path="/resident/:residentId" userId={this.state.userId} />
+      ))
+    }
     return (
       <>
         <NavBar
@@ -64,6 +77,7 @@ class App extends Component {
             <CheckInParcel path="/checkinparcel/" userId={this.state.userId} />
             <CheckOutItem path="/checkoutitem/" userId={this.state.userId} />
             <ResidentList path="/residentlist/" userId={this.state.userId} />
+            {residentList}
             <Profile path="/profile/:userId" /> 
             <NotFound default />
           </Router>

@@ -36,6 +36,13 @@ class Home extends Component {
     });
   }
 
+  deliverOne = (parcelObj) => {
+    post("/api/deliver", { _id: parcelObj._id });
+    this.setState({
+      parcels: this.state.parcels.filter(parcel => parcel._id !== parcelObj._id)
+    });
+  }
+
   deliverAll = (resident) => {
     let residentParcels = this.state.parcels.filter(parcel => parcel.resident == resident);
     residentParcels.map((parcel) => {
@@ -64,6 +71,7 @@ class Home extends Component {
         <SingleParcelRow
           parcels={this.state.parcels}
           resident={resident}
+          deliverOne={this.deliverOne}
           deliverAll={() => this.deliverAll(resident)}
         />
       ));
